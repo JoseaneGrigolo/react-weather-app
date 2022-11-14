@@ -6,16 +6,17 @@ export default function Weather(props) {
   const [weatherData, setWeatherData] = useState({ ready: false });
 
   function handleResponse(response) {
-    console.log(response.data);
+    console.log(response);
     setWeatherData({
       ready: true,
-      temperature: response.data.main.temp,
-      humidity: response.data.main.humidity,
+      temperature: response.data.temperature.current,
+      humidity: response.data.temperature.humidity,
       wind: response.data.wind.speed,
       date: "Monday 10:00",
-      city: response.data.name,
-      description: response.data.weather[0].description,
-      icon: "https://ssl.gstatic.com/onebox/weather/64/sunny.png",
+      city: response.data.city,
+      description: response.data.condition.description,
+      icon_url: response.data.condition.icon_url,
+      icon: response.data.condition.icon,
     });
   }
 
@@ -51,8 +52,8 @@ export default function Weather(props) {
           <div className="col-6">
             <div className="clearfix">
               <img
-                src={weatherData.icon}
-                alt={weatherData.description}
+                src={weatherData.icon_url}
+                alt={weatherData.icon}
                 className="float-start"
               />
               <div>
@@ -73,8 +74,8 @@ export default function Weather(props) {
       </div>
     );
   } else {
-    const apiKey = "52e34c3750a0a87a4e68575b57b95041";
-    let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${props.defaultCity}&appid=${apiKey}&units=metric`;
+    const apiKey = "f0e305386at1e3ea45oc41a38550b0b4";
+    let apiUrl = `https://api.shecodes.io/weather/v1/current?query=${props.defaultCity}&key=${apiKey}&units=metric`;
     axios.get(apiUrl).then(handleResponse);
     return "Loading...";
   }
